@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yf.concurrent.mapper.TbTicketMapper">
+
+    <resultMap id="BaseResultMap" type="com.yf.concurrent.model.TbTicket">
+        <result column="id" property="id"/>
+        <result column="no" property="no"/>
+        <result column="from_address" property="fromAddress"/>
+        <result column="to_address" property="toAddress"/>
+        <result column="start_time" property="startTime"/>
+        <result column="arrive_time" property="arriveTime"/>
+    </resultMap>
+
+    <!--基础列-->
+    <sql id="Base_Columns">
+		id,
+		`no`,
+		from_address,
+		to_address,
+		start_time,
+		arrive_time
+	</sql>
+
+    <!--基础连接查询-->
+    <sql id="Base_Joins">
+
+    </sql>
+
+    <!--查询所有记录-->
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Columns"/>
+        FROM
+        tb_ticket a
+        ORDER BY
+        a.id DESC
+    </select>
+
+
+    <!--查询列表-->
+    <select id="findList" parameterType="Map" resultType="com.yf.concurrent.model.TbTicket">
+        SELECT
+        <include refid="Base_Columns"/>
+        FROM
+        tb_ticket a
+        <where>
+            a.is_deleted != 1
+            <if test="no != null">
+                AND a.no = #{no}
+            </if>
+        </where>
+        ORDER BY
+        a.id ASC
+    </select>
+
+
+    <!--更新-->
+    <update id="update" parameterType="com.yf.concurrent.model.TbTicket">
+        UPDATE tb_bank_account
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        WHERE
+        id = #{id}
+    </update>
+</mapper>
